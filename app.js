@@ -76,7 +76,7 @@ class BilliardTimer {
             'p2Name', 'p2Color', 'tempsBase', 'tempsExtension', 'seuilAlerte',
             'seuilCritique', 'modeInterface', 'affichageMs', 'volumeSonore', 'vibrationMobile', 
             'autoStartOnReset', 'sonAlertes', 'sonClics', 'saveToast', 'btnFullScreen', 
-            'themeVisuel', 'appBody', 'btnShowRules', 'overlayRules', 'panelRules', 'fermerRules',
+            'themeVisuel', 'appBody', 'btnShowRules', 'overlayRules', 'panelRules', 'fermerRules', 'loader',
             'autoStartOnPlayerChange'
         ];
         
