@@ -12,11 +12,11 @@
   [headers.values]
     # Content Security Policy (CSP)
     # Bloque les contenus non autorisés pour prévenir les attaques XSS.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; connect-src 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; connect-src 'self'; worker-src 'self' blob:;"
     
     # Permissions Policy
     # Contrôle l'accès aux fonctionnalités du navigateur.
-    Permissions-Policy = "fullscreen=(self), vibrate=(self)"
+    Permissions-Policy = "fullscreen=(self), vibration=(self)"
 
     # X-Frame-Options
     # Empêche le site d'être affiché dans un <iframe> sur d'autres domaines (prévention du clickjacking).

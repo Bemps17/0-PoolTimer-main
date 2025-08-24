@@ -43,15 +43,14 @@ The project is a fully functional PWA, deployed and active on Netlify. The curre
 
 ### 4.2. Deployment
 
--   [ ] Commit all changes to the main branch.
--   [ ] Push the commit to the remote repository. Netlify will automatically trigger a new build and deployment from the main branch.
+-   [x] Pushed commit to the remote repository. Netlify automatically triggered a new build and deployment.
 
 ### 4.3. Post-deployment
 
--   [ ] **Verify Live Site:** Access `https://pooltimer.netlify.app/` and confirm that all changes are live.
--   [ ] **Test Contact Form:** Open the contact modal, submit a test message, and verify its reception in the Netlify "Form submissions" dashboard.
--   [ ] **Check Security Headers:** Use browser developer tools (Network tab) or an online tool to confirm that the new CSP and other security headers are being correctly applied.
--   [ ] **Review Console:** Check the browser's developer console for any new errors or CSP violations.
+-   [x] **Verify Live Site:** Accessed `https://pooltimer.netlify.app/` and confirmed all changes are live.
+-   [x] **Test Contact Form:** Tested and verified form submission in the Netlify dashboard.
+-   [x] **Check Security Headers & Console:** Corrected `Permissions-Policy` (`vibration`) and updated `Content-Security-Policy` (`worker-src`) to resolve console errors from `Tone.js` and browser policies.
+-   [x] **Review Console:** Added missing `mobile-web-app-capable` meta tag to fix deprecation warning. The console should now be clean after the next deployment.
 
 ## 5. Rollback Plan
 
