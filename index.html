@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Timer de Billard Pro v4</title>
+    <link rel="icon" href="img/icon/favicon.ico" sizes="any">
+    <link rel="icon" href="img/icon/favicon-32x32.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/icon/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+</head>
+<body id="appBody">
+   
+    <div class="scoreboard-body" id="container">
+        <div class="top-bar">
+            <div class="top-bar-players">
+                <div class="player-status" id="p1Status" data-player="1">
+                    <span class="player-name">P1</span> <span class="ext-status">EXT</span>
+                </div>
+                <div class="player-status" id="p2Status" data-player="2">
+                    <span class="player-name">P2</span> <span class="ext-status">EXT</span>
+                </div>
+            </div>
+            <div class="top-bar-controls">
+                <div class="icon-button" id="btnFullScreen" aria-label="Plein écran">
+                    <svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    <svg class="compress-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+                </div>
+                <div class="icon-button" id="menuArbitre" aria-label="Ouvrir le menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2-1.55a.39.39 0 0 0 .09-.58l-1.73-3a.38.38 0 0 0-.5-.24l-2.38.96a6.38 6.38 0 0 0-1.64-.94l-.38-2.61a.38.38 0 0 0-.38-.34H8.46a.38.38 0 0 0-.38.34l-.38 2.61a6.38 6.38 0 0 0-1.64.94l-2.38-.96a.38.38 0 0 0-.5.24l-1.73 3a.39.39 0 0 0 .09.58l2 1.55c-.05.3-.07.64-.07.94s.02.64.07.94l-2 1.55a.39.39 0 0 0-.09.58l1.73 3a.38.38 0 0 0 .5.24l2.38-.96a6.38 6.38 0 0 0 1.64.94l.38 2.61a.38.38 0 0 0 .38.34h3.46a.38.38 0 0 0 .38-.34l.38-2.61a6.38 6.38 0 0 0 1.64-.94l2.38.96a.38.38 0 0 0 .5-.24l1.73-3a.39.39 0 0 0-.09-.58l-2-1.55zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="timer-screen" id="timerScreen">
+            <div class="timer-content">
+                <div class="timer-officiel state-default" id="timerDisplay">45</div>
+            </div>
+            <div class="timer-extension-bar" id="btnExtension">EXTENSION</div>
+        </div>
+
+        <div class="control-panel" id="controlPanel">
+            <button class="bouton-sport" id="btnResetShot" aria-label="Coup Suivant">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"></path></svg>
+            </button>
+            <button class="bouton-sport" id="btnPlayPause" aria-label="Démarrer"></button>
+            <button class="bouton-sport bouton-carré" id="btnNewGame" aria-label="Nouvelle Partie">NEW</button>
+        </div>
+    </div>
+
+    <!-- Menu Panel -->
+    <div class="overlay" id="overlayMenu"></div>
+    <div class="panel" id="panelArbitre">
+        <div class="header-panel">
+            <h2>Configuration</h2>
+            <button class="fermer-panel" id="fermerPanel" aria-label="Fermer le menu">&times;</button>
+        </div>
+        <div class="panel-content" id="panelContent">
+            <div class="section-panel">
+                <h3>Joueurs</h3>
+                <div class="parametre-groupe">
+                    <label for="p1Name">Joueur 1</label>
+                    <div class="player-config">
+                        <input type="text" id="p1Name" maxlength="5" placeholder="P1">
+                        <input type="color" id="p1Color" value="#3498db">
+                    </div>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="p2Name">Joueur 2</label>
+                    <div class="player-config">
+                        <input type="text" id="p2Name" maxlength="5" placeholder="P2">
+                        <input type="color" id="p2Color" value="#e74c3c">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-panel">
+                <h3>Paramètres de Jeu</h3>
+                <div class="parametre-groupe">
+                    <label for="tempsBase">Temps de base (sec)</label>
+                    <input type="number" id="tempsBase" min="10" max="120">
+                </div>
+                <div class="parametre-groupe">
+                    <label for="tempsExtension">Temps d'extension (sec)</label>
+                    <input type="number" id="tempsExtension" min="5" max="60">
+                </div>
+                <div class="parametre-groupe">
+                    <label for="seuilAlerte">Seuil Alerte Orange (sec)</label>
+                    <input type="number" id="seuilAlerte" min="1" max="119">
+                </div>
+                <div class="parametre-groupe">
+                    <label for="seuilCritique">Seuil Alerte Rouge (sec)</label>
+                    <input type="number" id="seuilCritique" min="1" max="119">
+                </div>
+            </div>
+            
+            <div class="section-panel">
+                <h3>Interface & Audio</h3>
+                <div class="parametre-groupe">
+                    <label for="themeVisuel">Thème visuel</label>
+                     <select id="themeVisuel">
+                        <option value="sombre">Sombre</option>
+                        <option value="light">Clair</option>
+                        <option value="cyberpunk">Cyberpunk</option>
+                    </select>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="modeInterface">Mode d'interface</label>
+                    <select id="modeInterface">
+                        <option value="boutons">Boutons Visibles</option>
+                        <option value="tactile">Mode Tactile Complet</option>
+                    </select>
+                </div>
+                 <div class="parametre-groupe">
+                    <label for="affichageMs">Affichage millisecondes (sous 10s)</label>
+                    <select id="affichageMs">
+                        <option value="true">Oui</option>
+                        <option value="false">Non</option>
+                    </select>
+                </div>
+                 <div class="parametre-groupe">
+                    <label for="volumeSonore">Volume général</label>
+                    <input type="range" id="volumeSonore" min="0" max="1" step="0.1">
+                </div>
+                <div class="parametre-groupe">
+                    <label for="sonAlertes">Sons d'alerte (timer)</label>
+                     <select id="sonAlertes">
+                        <option value="true">Activés</option>
+                        <option value="false">Désactivés</option>
+                    </select>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="sonClics">Sons des clics (interface)</label>
+                     <select id="sonClics">
+                        <option value="true">Activés</option>
+                        <option value="false">Désactivés</option>
+                    </select>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="vibrationMobile">Vibration mobile</label>
+                     <select id="vibrationMobile">
+                        <option value="true">Activée</option>
+                        <option value="false">Désactivée</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-panel">
+                <h3>Automatisation</h3>
+                <div class="parametre-groupe">
+                    <label for="autoStartOnReset">Redémarrage auto après reset</label>
+                     <select id="autoStartOnReset">
+                        <option value="true">Oui</option>
+                        <option value="false">Non</option>
+                    </select>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="autoStartOnPlayerChange">Démarrage auto au changement de joueur</label>
+                     <select id="autoStartOnPlayerChange">
+                        <option value="true">Oui</option>
+                        <option value="false" selected>Non</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="section-panel">
+                 <button class="bouton-menu" id="btnShowHelp">Mode d'emploi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Panel -->
+    <div class="overlay" id="overlayHelp"></div>
+    <div class="panel-help" id="panelHelp">
+        <div class="header-panel">
+            <h2>Mode d'emploi</h2>
+            <button class="fermer-panel" id="fermerHelp" aria-label="Fermer l'aide">&times;</button>
+        </div>
+        <div class="help-content help-panel-content">
+            <p>Bienvenue sur le <strong>Timer de Billard Pro v4</strong> ! Cette application est conçue pour arbitrer vos parties avec précision et simplicité, en respectant les règles officielles du billard international 8-ball.</p>
+            
+            <h3>📱 Interface Principale</h3>
+            <ul>
+                <li><strong>Chronomètre Central :</strong> Affiche le temps restant pour le coup en cours. Il change de couleur selon l'urgence :
+                    <ul>
+                        <li>⚪ Blanc : Temps normal</li>
+                        <li>🟠 Orange : Alerte (paramétrable, défaut 15s)</li>
+                        <li>🔴 Rouge : Critique (paramétrable, défaut 5s)</li>
+                    </ul>
+                </li>
+                <li><strong>Cartes Joueurs (P1/P2) :</strong> En haut de l'écran
+                    <ul>
+                        <li>Affiche le joueur actif (surligné avec sa couleur)</li>
+                        <li>Indique le statut de l'extension : <span style="color: #2ecc71">EXT</span> (disponible) ou <span style="color: #c0392b">EXT</span> (utilisée)</li>
+                        <li><strong>Cliquez sur une carte pour changer de joueur</strong></li>
+                    </ul>
+                </li>
+                <li><strong>Barre Extension :</strong> Ajoute du temps supplémentaire (1x par joueur par partie)</li>
+            </ul>
+
+            <h3>🎮 Contrôles & Actions</h3>
+            
+            <h4>Écran Tactile (Zone du chrono)</h4>
+            <ul>
+                <li><strong>Simple Clic :</strong> Lance ▶️ ou met en pause ⏸️ le chronomètre</li>
+                <li><strong>Double Clic :</strong> Réinitialise le temps pour le joueur actuel</li>
+            </ul>
+
+            <h4>Cartes des Joueurs</h4>
+            <ul>
+                <li><strong>Clic sur P1 ou P2 :</strong> Change de joueur et réinitialise automatiquement le timer</li>
+                <li>Le joueur actif est mis en évidence avec sa couleur personnalisée</li>
+            </ul>
+
+            <h4>Panneau de Contrôle (boutons du bas)</h4>
+            <ul>
+                <li><strong>🔄 Reset :</strong> Réinitialise le timer pour le joueur actuel</li>
+                <li><strong>▶️/⏸️ Play/Pause :</strong> Démarre ou met en pause le chronomètre</li>
+                <li><strong>NEW :</strong> Nouvelle partie (réinitialise tout, y compris les extensions)</li>
+            </ul>
+
+            <h4>Extension de Temps</h4>
+            <ul>
+                <li>Chaque joueur peut utiliser <strong>1 extension par partie</strong></li>
+                <li>Cliquez sur la barre <strong>EXTENSION</strong> pendant que le timer tourne</li>
+                <li>Ajoute immédiatement le temps d'extension configuré (défaut : 15 secondes)</li>
+                <li>La barre devient rouge une fois utilisée pour le joueur</li>
+            </ul>
+
+            <h3>⚙️ Configuration (Roue crantée)</h3>
+            <p>Accédez aux paramètres en cliquant sur l'icône ⚙️ en haut à droite :</p>
+            <ul>
+                <li><strong>Joueurs :</strong> Personnalisez les noms (max 5 caractères) et couleurs</li>
+                <li><strong>Temps :</strong> 
+                    <ul>
+                        <li>Temps de base : 10-120 secondes (défaut 45s)</li>
+                        <li>Temps d'extension : 5-60 secondes (défaut 15s)</li>
+                    </ul>
+                </li>
+                <li><strong>Alertes :</strong> Définissez les seuils pour les alertes visuelles orange et rouge</li>
+                <li><strong>Interface :</strong>
+                    <ul>
+                        <li>Mode Boutons : Affiche les contrôles en bas</li>
+                        <li>Mode Tactile : Cache les boutons pour plus d'immersion</li>
+                    </ul>
+                </li>
+                <li><strong>Audio :</strong> Ajustez le volume des alertes sonores</li>
+                <li><strong>Automatisation :</strong> Activez le redémarrage automatique du timer après un reset</li>
+            </ul>
+            
+            <h3>📋 Règles Officielles (International 8-Ball)</h3>
+            <ul>
+                <li><strong>Temps par coup :</strong> 45 secondes (configurable)</li>
+                <li><strong>Extension :</strong> 1 par joueur par partie</li>
+                <li><strong>Changement de joueur :</strong> Après faute, empochage de la blanche, ou échec d'empochage</li>
+                <li>Le timer commence quand toutes les billes sont immobilisées</li>
+            </ul>
+            <button id="btnShowRules" class="bouton-menu">Voir les règles complètes</button>
+
+            <h3>💡 Conseils d'utilisation</h3>
+            <ul>
+                <li>En mode tactile, l'écran entier devient interactif</li>
+                <li>Les vibrations nécessitent l'autorisation du navigateur</li>
+                <li>Vos paramètres sont sauvegardés automatiquement</li>
+                <li>Le double-clic reset est idéal pour les corrections rapides</li>
+                <li>Utilisez les cartes joueurs pour un changement rapide et visuel</li>
+            </ul>
+
+            <h3>🎱 Bonne partie !</h3>
+        </div>
+    </div>
+
+    <!-- Rules Panel -->
+    <div class="overlay" id="overlayRules"></div>
+    <div class="panel-help" id="panelRules">
+        <div class="header-panel">
+            <h2>Procédures d'appel</h2>
+            <button class="fermer-panel" id="fermerRules" aria-label="Fermer les règles">&times;</button>
+        </div>
+        <div class="rules-panel-content help-panel-content">
+            <section>
+                <p>Approuvé et reconnu comme guide officiel et procédures d’appel par la WORLD EIGHTBALL POOL FEDERATION et ULTIMATE POOL.</p>
+                <p>L’intention de ce document est d’offrir aux arbitres des conseils et une structure claire sur la façon d’arbitrer un match. Les joueurs peuvent également le lire afin de se familiariser avec les procédures d’appel d’un arbitre.</p>
+                <h3>Vous êtes responsable de faire respecter :</h3>
+                <ul>
+                    <li>Le code vestimentaire requis.</li>
+                    <li>L'état d'ébriété des joueurs.</li>
+                    <li>Les lois/règles qui régissent le jeu de billard.</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Notes sur les appels:</h3>
+                <ul>
+                    <li>Votre appel est en <strong>gras</strong>.</li>
+                    <li>Les mots en <em>italique</em> sont des indications.</li>
+                </ul>
+            </section>
+
+            <button class="accordion-header"><span>1. Début du match</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Comptez les joueurs : 3, 2, 1, tirage au sort.</strong></p><p>Après avoir décidé du vainqueur, APPEL : <strong>(nom du joueur) gagne le tirage au sort.</strong></p><p>APPEL : <strong>1ère manche, (nom du joueur) à la casse.</strong></p></div>
+            
+            <button class="accordion-header"><span>2. Pendant le match</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Manche (numéro), (nom) à la casse, score (X) à (Y).</strong></p></div>
+
+            <button class="accordion-header"><span>3. Casse légale</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>Aucun appel requis.</p></div>
+
+            <button class="accordion-header"><span>4. Bille 8 empochée à la casse</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Temps mort, replacez la bille 8, temps en cours.</strong></p></div>
+
+            <button class="accordion-header"><span>5. Casse fautive</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Casse fautive, ré-rack.</strong> Le joueur entrant choisit de casser.</p></div>
+
+            <button class="accordion-header"><span>6. Blanche empochée/sortie</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Faute, bille en main...</strong> (depuis la zone si à la casse, sinon de n'importe où).</p></div>
+
+            <button class="accordion-header"><span>7. Choix du groupe</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>Si le choix n'est pas évident et que le joueur ne nomine pas, APPEL : <strong>Perte de tour.</strong></p></div>
+
+            <button class="accordion-header"><span>8. Groupes décidés</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>(Jaunes/Rouges) en jeu.</strong> (uniquement à la première occasion)</p></div>
+
+            <button class="accordion-header"><span>9. Fautes standard</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Faute, bille en main.</strong></p></div>
+
+            <button class="accordion-header"><span>10. Coup tactique</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>Si le coup est manqué, APPEL : <strong>Perte de tour.</strong></p></div>
+
+            <button class="accordion-header"><span>11. Faute de perte de manche</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Faute, perte de manche.</strong></p></div>
+
+            <button class="accordion-header"><span>12. Chronomètre</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>À 5 secondes restantes, APPEL : <strong>5, 4, 3, 2, 1.</strong> Si dépassé, APPEL : <strong>Faute de temps.</strong></p></div>
+
+            <button class="accordion-header"><span>13. Extension de temps</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>Si demandée, APPEL : <strong>Extension demandée.</strong> Si non disponible, APPEL : <strong>Aucune extension restante.</strong></p></div>
+
+            <button class="accordion-header"><span>14. Temps mort</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Temps mort.</strong> Après résolution, APPEL : <strong>Temps en cours.</strong></p></div>
+
+            <button class="accordion-header"><span>15. Bille touchée</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Bille touchée</strong> (indiquer laquelle).</p></div>
+
+            <button class="accordion-header"><span>16. Bille bloquée</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Bille bloquée</strong> (indiquer laquelle).</p></div>
+
+            <button class="accordion-header"><span>17. Impasse</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>Si demandée, évaluer et APPELER : <strong>Impasse</strong> ou <strong>Pas d'impasse.</strong></p></div>
+
+            <button class="accordion-header"><span>18. Fin de manche</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Manche.</strong></p></div>
+
+            <button class="accordion-header"><span>19. Fin de match</span><span class="arrow">▼</span></button>
+            <div class="accordion-content"><p>APPEL : <strong>Manche et match (Nom du joueur).</strong> Si le temps est écoulé, le plus haut score gagne. Si égalité, possibilité de shoot-out.</p></div>
+        </div>
+    </div>
+
+    <!-- Toast de sauvegarde -->
+    <div id="saveToast" class="save-toast">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>
+        <span>Paramètres sauvegardés !</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
