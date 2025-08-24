@@ -1,0 +1,31 @@
+# Configuration pour le déploiement sur Netlify
+
+[build]
+  # Ce site est statique, pas de commande de build nécessaire.
+  command = ""
+  # Le contenu à publier se trouve à la racine du projet.
+  publish = "/"
+
+# Configuration des en-têtes HTTP pour améliorer la sécurité.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Content Security Policy (CSP)
+    # Bloque les contenus non autorisés pour prévenir les attaques XSS.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; connect-src 'self';"
+    
+    # Permissions Policy
+    # Contrôle l'accès aux fonctionnalités du navigateur.
+    Permissions-Policy = "fullscreen=(self), vibrate=(self)"
+
+    # X-Frame-Options
+    # Empêche le site d'être affiché dans un <iframe> sur d'autres domaines (prévention du clickjacking).
+    X-Frame-Options = "DENY"
+
+    # X-Content-Type-Options
+    # Empêche le navigateur de deviner le type MIME d'un fichier.
+    X-Content-Type-Options = "nosniff"
+
+    # Referrer-Policy
+    # Contrôle la quantité d'informations de "referrer" envoyées.
+    Referrer-Policy = "strict-origin-when-cross-origin"

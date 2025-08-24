@@ -1,5 +1,9 @@
 # Timer de Billard Pro 🎱
 
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/af3ace2a-b6cd-433a-8280-d69a7f6df9b7/deploy-status)](https://app.netlify.com/projects/pooltimer/deploys)
+
+
 [![Licence: MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![État du projet: Actif](https://img.shields.io/badge/projet-actif-brightgreen.svg)](#)
 
@@ -58,17 +62,10 @@ Un chronomètre de tir ("shot clock") moderne, entièrement personnalisable et c
 
 ## 🚀 Installation et Utilisation
 
-Ce projet est "zéro dépendance" et ne nécessite aucune étape de build.
+Ce projet est une application web statique qui ne nécessite aucune installation complexe.
 
-1.  **Clonez le dépôt :**
-    ```bash
-    git clone https://github.com/VOTRE_NOM/timer-billard-pro.git
-    ```
-2.  **Naviguez dans le dossier :**
-    ```bash
-    cd timer-billard-pro
-    ```
-3.  **Ouvrez le fichier `index.html`** dans votre navigateur web préféré. C'est tout !
+1.  **Accès direct :** Le plus simple est d'utiliser la version en ligne : **pooltimer.netlify.app**
+2.  **Utilisation locale :** Si vous souhaitez l'exécuter localement, téléchargez ou clonez le dépôt, puis ouvrez le fichier `index.html` dans votre navigateur.
 
 ### Commandes principales :
 *   **Clic simple (sur l'écran) :** Démarre / Met en pause le timer.
@@ -80,7 +77,13 @@ Ce projet est "zéro dépendance" et ne nécessite aucune étape de build.
 
 ## 룰 Règles Officielles
 
-L'application intègre un résumé des procédures d'appel officielles de la *WORLD EIGHTBALL POOL FEDERATION*. Pour une lecture détaillée et complète des règles, vous pouvez consulter le fichier rules.html inclus dans ce dépôt.
+L'application intègre un résumé des procédures d'appel officielles de la *WORLD EIGHTBALL POOL FEDERATION*. Vous pouvez y accéder directement depuis le menu de l'application.
+
+---
+
+## 📧 Contact
+
+Pour toute question, suggestion ou pour signaler un bug, vous pouvez utiliser le formulaire de contact disponible dans le menu de configuration de l'application.
 
 ---
 

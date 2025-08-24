@@ -145,9 +145,12 @@ body.theme-cyberpunk .scoreboard-body {
 
 .top-bar-players { 
     display: flex; 
-    gap: 0.5rem; 
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem; 
     flex-grow: 1; 
 }
+
 .top-bar-controls { 
     display: flex; 
     align-items: center; 
@@ -223,6 +226,7 @@ body.theme-light .player-status {
    ======================================== */
 .timer-screen {
     width: 100%;
+
     flex-grow: 1;
     display: grid;
     grid-template-rows: 1fr auto;
@@ -258,7 +262,7 @@ body.theme-light .player-status {
 .timer-officiel {
     font-family: var(--font-timer);
     font-weight: 700;
-    font-size: clamp(50vw, 5vw, 60vw) !important;
+    font-size: clamp(10rem, 25vw, 22rem);
     line-height: 1;
     color: var(--c-digit-default);
     text-shadow: 0 0 2px var(--c-digit-default), 0 0 8px rgba(224, 224, 224, 0.5);
@@ -295,7 +299,7 @@ body.theme-cyberpunk .timer-officiel.state-critical {
     font-weight: 600;
     font-size: 1.5rem;
     letter-spacing: 2px;
-    color: white;
+    color: var(--c-text-primary);
     background: rgba(0, 157, 47, 0.5);
     border: 1px solid rgba(13, 255, 0, 0.889);
     box-shadow: 0 0 10px rgba(0, 255, 21, 0.7);
@@ -325,6 +329,7 @@ body.theme-cyberpunk .timer-officiel.state-critical {
     width: 100%;
     max-width: 500px;
     padding: 0.5rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
     background: var(--c-bezel);
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
@@ -333,7 +338,7 @@ body.theme-cyberpunk .timer-officiel.state-critical {
     align-items: center;
     gap: 1.5rem;
     flex-shrink: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.4s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.4s ease, transform 0.4s ease;
 }
 
 .scoreboard-body.tactile-mode .control-panel { 
@@ -484,6 +489,12 @@ body.theme-cyberpunk #btnPlayPause.playing {
     flex-shrink: 0; 
 }
 
+.header-panel-controls {
+    display: flex;
+    align-items: center;
+    gap: 10vw;
+}
+
 .header-panel h2 { 
     font-size: 1.5rem; 
     font-weight: 600; 
@@ -496,12 +507,24 @@ body.theme-cyberpunk #btnPlayPause.playing {
     font-size: 2rem; 
     cursor: pointer; 
     color: var(--c-panel-text-secondary); 
-    transition: color 0.2s, transform 0.2s; 
+    transition: color 0.2s, transform 0.2s;
+    /* Alignement avec les autres icônes */
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .fermer-panel:hover { 
     color: var(--c-panel-text-primary); 
     transform: rotate(90deg); 
+}
+
+/* Ajustement pour le bouton plein écran dans le panneau */
+.header-panel .icon-button svg {
+    width: 28px;
+    height: 28px;
 }
 
 /* Sections et Paramètres */
@@ -622,6 +645,21 @@ body.theme-cyberpunk #btnPlayPause.playing {
     padding: 2px 6px; 
     border-radius: 4px; 
     font-family: monospace; 
+}
+
+/* Formulaire de contact */
+.contact-form {
+    margin-top: 1.5rem;
+}
+
+.contact-form .parametre-groupe {
+    margin-bottom: 1.5rem;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: var(--font-body);
 }
 
 /* ========================================
@@ -794,15 +832,16 @@ body.theme-cyberpunk #btnPlayPause.playing {
     z-index: -1;
     /* Image par défaut */
     background-image: url('timer.svg');
-   background-size: 80%;
+   background-size: 80px;
   max-width: 100%;
   max-height: 100%;
+  margin: 5px;
     background-repeat: no-repeat;
-    background-position:  center;
-    background-attachment: fixed;
+    background-position:  left top;
+    background-attachment:scroll;
     /* Effets pour la lisibilité du timer */
-    opacity: 0.2;
-    filter: blur(2px);
+    opacity: 0.3;
+    filter: blur(0.5px);
     transition: background-image 0.4s ease, opacity 0.4s ease;
 }
 

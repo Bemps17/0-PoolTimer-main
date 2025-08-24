@@ -3,16 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- SEO & Metadonnées -->
     <title>Timer de Billard Pro v4</title>
+    <meta name="description" content="Chronomètre de tir (shot clock) pour le billard. Entièrement configurable, installable (PWA) et avec des alertes sonores et visuelles. Idéal pour l'arbitrage.">
+    <link rel="canonical" href="https://pooltimer.netlify.app/">
+
+    <!-- Open Graph (pour le partage sur les réseaux sociaux) -->
+    <meta property="og:title" content="Timer de Billard Pro v4">
+    <meta property="og:description" content="Un chronomètre de billard complet pour l'arbitrage, avec gestion des joueurs, extensions, et thèmes.">
+    <meta property="og:image" content="https://pooltimer.netlify.app/img/icon/android-chrome-512x512.png">
+    <meta property="og:url" content="https://pooltimer.netlify.app/">
+    <meta property="og:type" content="website">
+
+    <!-- Icônes & Manifest -->
     <link rel="icon" href="img/icon/favicon.ico" sizes="any">
     <link rel="icon" href="img/icon/favicon-32x32.png" type="image/png">
     <link rel="apple-touch-icon" href="img/icon/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json">
+
+    <!-- Intégration Mobile & PWA -->
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Billard Pro">
+
+    <!-- Polices & Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+
+    <!-- Sécurité -->
+    <!-- La Content-Security-Policy est maintenant gérée via netlify.toml pour le déploiement -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js" integrity="sha512-gwSDP1iEKl4KG0wi3N89RAJU91s78jb/TGC6lsbF5IyR2c19Rn7Jl1icK4K4kUiJNwQUEPI7o98T+GJVWNuvIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body id="appBody">
 
@@ -59,12 +83,8 @@
                 </div>
             </div>
             <div class="top-bar-controls">
-                <div class="icon-button" id="btnFullScreen" aria-label="Plein écran">
-                    <svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                    <svg class="compress-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
-                </div>
                 <div class="icon-button" id="menuArbitre" aria-label="Ouvrir le menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2-1.55a.39.39 0 0 0 .09-.58l-1.73-3a.38.38 0 0 0-.5-.24l-2.38.96a6.38 6.38 0 0 0-1.64-.94l-.38-2.61a.38.38 0 0 0-.38-.34H8.46a.38.38 0 0 0-.38.34l-.38 2.61a6.38 6.38 0 0 0-1.64.94l-2.38-.96a.38.38 0 0 0-.5.24l-1.73 3a.39.39 0 0 0 .09.58l2 1.55c-.05.3-.07.64-.07.94s.02.64.07.94l-2 1.55a.39.39 0 0 0-.09.58l1.73 3a.38.38 0 0 0 .5.24l2.38-.96a6.38 6.38 0 0 0 1.64.94l.38 2.61a.38.38 0 0 0 .38.34h3.46a.38.38 0 0 0 .38-.34l.38-2.61a6.38 6.38 0 0 0 1.64-.94l2.38.96a.38.38 0 0 0 .5-.24l1.73-3a.39.39 0 0 0-.09-.58l-2-1.55zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2-1.55a.39.39 0 0 0 .09-.58l-1.73-3a.38.38 0 0 0-.5-.24l-2.38.96a6.38 6.38 0 0 0-1.64-.94l-.38-2.61a.38.38 0 0 0-.38-.34H8.46a.38.38 0 0 0-.38.34l-.38 2.61a6.38 6.38 0 0 0-1.64-.94l-2.38-.96a.38.38 0 0 0-.5.24l-1.73 3a.39.39 0 0 0 .09.58l2 1.55c-.05.3-.07.64-.07.94s.02.64.07.94l-2 1.55a.39.39 0 0 0-.09.58l1.73 3a.38.38 0 0 0 .5.24l2.38-.96a6.38 6.38 0 0 0 1.64.94l.38 2.61a.38.38 0 0 0 .38.34h3.46a.38.38 0 0 0 .38-.34l.38-2.61a6.38 6.38 0 0 0 1.64-.94l2.38.96a.38.38 0 0 0 .5-.24l1.73-3a.39.39 0 0 0-.09-.58l-2-1.55zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
                 </div>
             </div>
         </div>
@@ -90,7 +110,13 @@
     <div class="panel" id="panelArbitre">
         <div class="header-panel">
             <h2>Configuration</h2>
-            <button class="fermer-panel" id="fermerPanel" aria-label="Fermer le menu">&times;</button>
+            <div class="header-panel-controls">
+                <div class="icon-button" id="btnFullScreen" aria-label="Plein écran">
+                    <svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    <svg class="compress-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+                </div>
+                <button class="fermer-panel" id="fermerPanel" aria-label="Fermer le menu">&times;</button>
+            </div>
         </div>
         <div class="panel-content" id="panelContent">
             <div class="section-panel">
@@ -202,6 +228,7 @@
             
             <div class="section-panel">
                  <button class="bouton-menu" id="btnShowHelp">Mode d'emploi</button>
+                 <button class="bouton-menu" id="btnShowContact">Contact</button>
             </div>
         </div>
     </div>
@@ -264,9 +291,23 @@
                 <li>La barre devient rouge une fois utilisée pour le joueur</li>
             </ul>
 
+            <h3>⌨️ Raccourcis Clavier</h3>
+            <p>Contrôlez le timer rapidement avec votre clavier :</p>
+            <ul>
+                <li><strong>Espace :</strong> Démarrer / Mettre en pause</li>
+                <li><strong>R :</strong> Réinitialiser le coup (Reset)</li>
+                <li><strong>N :</strong> Nouvelle partie</li>
+                <li><strong>1 / ← :</strong> Sélectionner Joueur 1</li>
+                <li><strong>2 / → :</strong> Sélectionner Joueur 2</li>
+                <li><strong>E / ↑ :</strong> Utiliser l'extension</li>
+                <li><strong>M / Echap :</strong> Ouvrir / Fermer le menu</li>
+                <li><strong>F :</strong> Activer / Désactiver le plein écran</li>
+            </ul>
+
             <h3>⚙️ Configuration (Roue crantée)</h3>
             <p>Accédez aux paramètres en cliquant sur l'icône ⚙️ en haut à droite :</p>
             <ul>
+                <li><strong>Plein Écran :</strong> Le bouton pour basculer en plein écran se trouve dans l'en-tête de ce panneau.</li>
                 <li><strong>Joueurs :</strong> Personnalisez les noms (max 5 caractères) et couleurs</li>
                 <li><strong>Temps :</strong> 
                     <ul>
@@ -389,6 +430,34 @@
 
             <button class="accordion-header"><span>19. Fin de match</span><span class="arrow">▼</span></button>
             <div class="accordion-content"><p>APPEL : <strong>Manche et match (Nom du joueur).</strong> Si le temps est écoulé, le plus haut score gagne. Si égalité, possibilité de shoot-out.</p></div>
+        </div>
+    </div>
+
+    <!-- Contact Panel -->
+    <div class="overlay" id="overlayContact"></div>
+    <div class="panel-help" id="panelContact">
+        <div class="header-panel">
+            <h2>Contact</h2>
+            <button class="fermer-panel" id="fermerContact" aria-label="Fermer le formulaire de contact">&times;</button>
+        </div>
+        <div class="help-panel-content">
+            <p>Une question, une suggestion ou un bug à signaler ? N'hésitez pas à m'envoyer un message.</p>
+            <form name="contact" method="POST" data-netlify="true" class="contact-form">
+                <input type="hidden" name="form-name" value="contact" />
+                <div class="parametre-groupe">
+                    <label for="contactName">Votre nom</label>
+                    <input type="text" id="contactName" name="name" required>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="contactEmail">Votre email</label>
+                    <input type="email" id="contactEmail" name="email" required>
+                </div>
+                <div class="parametre-groupe">
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="bouton-menu">Envoyer</button>
+            </form>
         </div>
     </div>
 

@@ -76,7 +76,8 @@ class BilliardTimer {
             'p2Name', 'p2Color', 'tempsBase', 'tempsExtension', 'seuilAlerte',
             'seuilCritique', 'modeInterface', 'affichageMs', 'volumeSonore', 'vibrationMobile', 
             'autoStartOnReset', 'sonAlertes', 'sonClics', 'saveToast', 'btnFullScreen', 
-            'themeVisuel', 'appBody', 'btnShowRules', 'overlayRules', 'panelRules', 'fermerRules', 'loader',
+            'themeVisuel', 'appBody', 'btnShowRules', 'overlayRules', 'panelRules', 'fermerRules',
+            'btnShowContact', 'overlayContact', 'panelContact', 'fermerContact', 'loader',
             'autoStartOnPlayerChange'
         ];
         
@@ -85,6 +86,7 @@ class BilliardTimer {
             if (el) this.domElements[id] = el;
         });
         
+        this.domElements.topBarControls = this.domElements.container.querySelector('.top-bar-controls');
         this.domElements.configInputs = this.domElements.panelArbitre.querySelectorAll('input, select');
     }
 
@@ -105,8 +107,16 @@ class BilliardTimer {
         });
         
         // Sélection des joueurs
-        this.domElements.p1Status.addEventListener('click', () => this.selectPlayer(1));
-        this.domElements.p2Status.addEventListener('click', () => this.selectPlayer(2));
+        const setupPlayerSelection = (element, playerNum) => {
+            element.addEventListener('click', () => this.selectPlayer(playerNum));
+            // Ajout du support tactile pour une réactivité immédiate sur mobile
+            element.addEventListener('touchend', (e) => {
+                e.preventDefault(); // Empêche le "ghost click" qui suivrait
+                this.selectPlayer(playerNum);
+            });
+        };
+        setupPlayerSelection(this.domElements.p1Status, 1);
+        setupPlayerSelection(this.domElements.p2Status, 2);
 
         // Écran tactile
         this.domElements.timerScreen.addEventListener('click', (e) => this.handleTimerScreenClick(e));
@@ -137,6 +147,16 @@ class BilliardTimer {
             this.domElements.fermerRules.addEventListener('click', () => this.toggleRules(false));
         }
 
+        // Panneau de contact
+        if (this.domElements.btnShowContact) {
+            this.domElements.btnShowContact.addEventListener('click', () => {
+                this.playSound('click');
+                this.toggleContact(true);
+            });
+            this.domElements.overlayContact.addEventListener('click', () => this.toggleContact(false));
+            this.domElements.fermerContact.addEventListener('click', () => this.toggleContact(false));
+        }
+
         // Changements de configuration
         this.domElements.configInputs.forEach(element => {
             element.addEventListener('change', () => this.handleConfigChange());
@@ -144,10 +164,9 @@ class BilliardTimer {
 
         // Plein écran
         this.domElements.btnFullScreen.addEventListener('click', () => this.toggleFullScreen());
-        document.addEventListener('fullscreenchange', () => this.resizeTimerDisplay());
-
-        // Redimensionnement
-        window.addEventListener('resize', () => this.resizeTimerDisplay());
+        
+        // Raccourcis clavier et activité de la souris
+        window.addEventListener('keydown', (e) => this.handleKeyPress(e));
         
         // Gestion tactile du panneau
         this.domElements.panelArbitre.addEventListener('touchstart', (e) => this.handlePanelTouchStart(e), { passive: false });
@@ -484,7 +503,6 @@ class BilliardTimer {
         this.updateExtensionButton();
         this.updatePlayerIndicators();
         this.updateInterfaceMode();
-        this.resizeTimerDisplay();
     }
 
     updateDisplay() {
@@ -559,35 +577,18 @@ class BilliardTimer {
         this.domElements.container.classList.toggle('tactile-mode', this.config.modeInterface === 'tactile');
     }
     
-    resizeTimerDisplay() {
-        const screen = this.domElements.timerScreen;
-        const timer = this.domElements.timerDisplay;
-        const screenWidth = screen.clientWidth - 32;
-        const screenHeight = screen.clientHeight - 32;
-        
-        let fontSize = screenWidth * 0.55;
-        if (fontSize > screenHeight) {
-            fontSize = screenHeight * 0.9;
-        }
-        
-        timer.style.fontSize = `${fontSize}px`;
-    }
-
     applyTheme() {
         const body = this.domElements.appBody;
         body.classList.remove('theme-light', 'theme-cyberpunk');
         
-        if (this.config.theme === 'light') {
+        const theme = this.config.theme;
+        if (theme === 'light') {
             body.classList.add('theme-light');
-        } else if (this.config.theme === 'cyberpunk') {
+        } else if (theme === 'cyberpunk') {
             body.classList.add('theme-cyberpunk');
         }
     }
 
-    // ========================================
-    // SECTION: Alertes et Audio
-    // ========================================
-    
     handleAlerts() {
         const remainingSec = this.state.remainingTime / 1000;
         const currentWholeSecond = Math.floor(remainingSec);
@@ -665,6 +666,59 @@ class BilliardTimer {
         this.domElements.menuArbitre.classList.toggle('active', open);
     }
     
+    handleKeyPress(e) {
+        // Ne pas activer les raccourcis si un champ de saisie est actif
+        const activeEl = document.activeElement;
+        if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'SELECT')) {
+            return;
+        }
+
+        // Empêcher le comportement par défaut pour les touches utilisées
+        const preventedKeys = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        if (preventedKeys.includes(e.key)) {
+            e.preventDefault();
+        }
+
+        switch (e.key.toLowerCase()) {
+            case ' ': // Espace
+                this.togglePlayPause();
+                break;
+            case 'r':
+                this.resetShot();
+                break;
+            case 'n':
+                this.newGame();
+                break;
+            case 'e':
+            case 'arrowup':
+                this.useExtension();
+                break;
+            case '1':
+            case 'arrowleft':
+                this.selectPlayer(1);
+                break;
+            case '2':
+            case 'arrowright':
+                this.selectPlayer(2);
+                break;
+            case 'f':
+                this.toggleFullScreen();
+                break;
+            case 'm':
+            case 'escape':
+                if (this.domElements.panelHelp.classList.contains('active')) {
+                    this.toggleHelp(false);
+                } else if (this.domElements.panelRules.classList.contains('active')) {
+                    this.toggleRules(false);
+                } else if (this.domElements.panelContact && this.domElements.panelContact.classList.contains('active')) {
+                    this.toggleContact(false);
+                } else {
+                    this.toggleMenu(!this.domElements.panelArbitre.classList.contains('active'));
+                }
+                break;
+        }
+    }
+
     toggleHelp(open) {
         this.domElements.panelHelp.classList.toggle('active', open);
         this.domElements.overlayHelp.classList.toggle('active', open);
@@ -673,6 +727,13 @@ class BilliardTimer {
     toggleRules(open) {
         this.domElements.panelRules.classList.toggle('active', open);
         this.domElements.overlayRules.classList.toggle('active', open);
+    }
+
+    toggleContact(open) {
+        if (this.domElements.panelContact) {
+            this.domElements.panelContact.classList.toggle('active', open);
+            this.domElements.overlayContact.classList.toggle('active', open);
+        }
     }
 
     showSaveToast() {

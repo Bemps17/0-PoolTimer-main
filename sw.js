@@ -6,6 +6,7 @@ const ASSETS_TO_CACHE = [
   'manifest.json',
   'styles.css',
   'app.js',
+  'timer.svg',
   'img/icon/android-chrome-192x192.png',
   'img/icon/android-chrome-512x512.png',
   'img/icon/apple-touch-icon.png',
