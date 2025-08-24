@@ -51,6 +51,7 @@ The project is a fully functional PWA, deployed and active on Netlify. The curre
 -   [x] **Test Contact Form:** Tested and verified form submission in the Netlify dashboard.
 -   [x] **Check Security Headers & Console:** Corrected `Permissions-Policy` (`vibration`) and updated `Content-Security-Policy` (`worker-src`) to resolve console errors from `Tone.js` and browser policies.
 -   [x] **Review Console:** Added missing `mobile-web-app-capable` meta tag to fix deprecation warning. The console should now be clean after the next deployment.
+-   [x] **Debug `Permissions-Policy`:** Re-enabled the `vibration` directive in `netlify.toml` as it's required for mobile functionality. Added detailed logging to the `vibrate()` function in `app.js` to diagnose the issue on mobile devices. The "Unrecognized feature" error may persist on some desktop browsers but can be ignored.
 
 ## 5. Rollback Plan
 

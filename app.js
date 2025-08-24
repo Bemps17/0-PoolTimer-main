@@ -643,12 +643,27 @@ class BilliardTimer {
     }
 
     vibrate(pattern) {
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+        // Log de débogage uniquement sur mobile
+        if (isMobile) {
+            console.log('[VIBRATE DEBUG] Tentative de vibration...');
+            console.log(`- Vibration activée (config): ${this.config.vibration}`);
+            console.log(`- API supportée (navigateur): ${'vibrate' in navigator && !!navigator.vibrate}`);
+        }
+
         if (this.config.vibration && 'vibrate' in navigator && navigator.vibrate) {
             try {
                 navigator.vibrate(pattern);
+                if (isMobile) {
+                    console.log(`[VIBRATE DEBUG] Appel à navigator.vibrate(${JSON.stringify(pattern)}) réussi.`);
+                }
             } catch (e) {
                 console.warn("Vibration failed.", e);
+                if (isMobile) console.error('[VIBRATE DEBUG] Erreur lors de l\'appel à la vibration :', e);
             }
+        } else if (isMobile) {
+            console.log('[VIBRATE DEBUG] Vibration non exécutée (config désactivée ou API non supportée).');
         }
     }
 
